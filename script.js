@@ -43,3 +43,49 @@ function calcularCostos(matrix) {
     console.error(error);
   }
 }
+function costoMinimoViaje(tarifas, n) {
+  const dp = Array(n).fill(Infinity);
+  const prev = Array(n).fill(-1);
+  dp[0] = 0;
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (dp[j] > dp[i] + tarifas[i][j]) {
+        dp[j] = dp[i] + tarifas[i][j];
+        prev[j] = i;
+      }
+    }
+  }
+
+  let ruta = [];
+  for (let at = n - 1; at !== -1; at = prev[at]) {
+    ruta.push(at);
+  }
+  ruta.reverse();
+
+  return { costo: dp[n - 1], ruta };
+}
+
+function costoVorazViaje(tarifas, n) {
+  let costo = 0;
+  let ciudad = 0;
+  let ruta = [ciudad];
+
+  while (ciudad < n - 1) {
+    let minCosto = Infinity;
+    let siguienteCiudad = ciudad;
+
+    for (let i = ciudad + 1; i < n; i++) {
+      if (tarifas[ciudad][i] < minCosto) {
+        minCosto = tarifas[ciudad][i];
+        siguienteCiudad = i;
+      }
+    }
+
+    costo += minCosto;
+    ciudad = siguienteCiudad;
+    ruta.push(ciudad);
+  }
+
+  return { costo, ruta };
+}
