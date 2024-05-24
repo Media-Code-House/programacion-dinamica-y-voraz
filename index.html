@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viaje en Bus</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+    }
+    button {
+      display: block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 20px auto;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .results {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    /* Estilos para el modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Viaje en Bus</h1>
+  <div class="container">
+    <input type="file" id="fileUpload" accept=".xlsx, .xls" />
+    <button onclick="processFile()">Procesar Archivo</button>
+    <button id="instructionsBtn">Mostrar Instrucciones</button>
+    <div class="results" id="result"></div>
+  </div>
+
+  <!-- El modal -->
+  <div id="instructionsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Instrucciones</h2>
+      <p>
+        1. Preparar el Archivo Excel:
+        <ul>
+          <li>Crea o modifica un archivo Excel que contenga la matriz de tarifas de viaje entre ciudades.</li>
+          <li>Asegúrate de que la primera fila y la primera columna contengan los nombres de las ciudades.</li>
+          <li>Las celdas correspondientes deben tener los costos de viaje. La matriz debe ser triangular superior.</li>
+          <li><a href="entada.xlsx" download="entrada.xlsx">Descargar archivo XML de prueba</a></li>
+        </ul>
+      </p>
+      <p>
+        2. Subir el Archivo Excel:
+        <ul>
+          <li>Abre el archivo <code>index.html</code> en tu navegador.</li>
+          <li>Haz clic en el botón "Seleccionar archivo" y selecciona tu archivo Excel.</li>
+          <li>Haz clic en el botón "Procesar Archivo".</li>
+        </ul>
+      </p>
+      <p>
+        3. Ver los Resultados:
+        <ul>
+          <li>Los resultados se mostrarán en la sección de resultados de la página.</li>
+          <li>Verás el costo mínimo y la ruta calculados utilizando tanto Programación Dinámica como un Algoritmo Voraz.</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Obtener el modal
+    var modal = document.getElementById("instructionsModal");
+
+    // Obtener el botón que abre el modal
+    var btn = document.getElementById("instructionsBtn");
+
+    // Obtener el elemento <span> que cierra el modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // Cuando el usuario hace clic en el botón, abre el modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // Cuando el usuario hace clic en <span> (x), cierra el modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // Cuando el usuario hace clic en cualquier lugar fuera del modal, cierra el modal
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
